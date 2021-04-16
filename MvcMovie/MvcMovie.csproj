@@ -9,15 +9,22 @@
     <Compile Remove="Migrations\20210413143125_UpdateMovie.Designer.cs" />
     <Compile Remove="Migrations\20210413150603_movie.cs" />
     <Compile Remove="Migrations\20210413150603_movie.Designer.cs" />
+    <Compile Remove="Migrations\20210413150828_SeedMigration.cs" />
+    <Compile Remove="Migrations\20210413150828_SeedMigration.Designer.cs" />
+    <Compile Remove="Migrations\20210415141607_Review.cs" />
+    <Compile Remove="Migrations\20210415141607_Review.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.RazorPages" Version="2.2.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.13">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+    <PackageReference Include="PagedList" Version="1.17.0" />
+    <PackageReference Include="PagedList.Mvc" Version="4.5.0" />
   </ItemGroup>
 
 </Project>

@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MvcMovie.Data;
 using MvcMovie.Models;
+
+using PagedList;
+
+
 
 namespace MvcMovie.Controllers
 {
@@ -20,11 +23,16 @@ namespace MvcMovie.Controllers
         }
 
         // GET: Movies
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? pageNumber )
         {
-            return View(await _context.Movie.ToListAsync());
-        }
+            var movies = from s in _context.Movie
+                         select s;
+            int pageSize = 3;
+            return View(await PaginatedList<Movie>.CreateAsync(movies.AsNoTracking(), pageNumber ?? 1, pageSize));
+            // return View(await _context.Movie.ToListAsync());
 
+        }
+       
         // GET: Movies/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -33,20 +41,43 @@ namespace MvcMovie.Controllers
                 return NotFound();
             }
 
-            var movie = await _context.Movie
+            MovieReviews result = new MovieReviews();
+
+            Movie movie = await _context.Movie
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (movie == null)
             {
                 return NotFound();
             }
-
-            return View(movie);
+            else
+            {
+               
+                var reviews = await _context.Reviews.Where(x => x.IdMovie.Equals(id)).ToListAsync();
+                result.Movie = movie;
+                result.Reviews = reviews;
+            }
+            return View(result);
         }
 
         // GET: Movies/Create
         public IActionResult Create()
         {
             return View();
+        }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateReview([Bind("Id,IdMovie,Reviewer,Text,ReviewDate")] Review review)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(review);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         // POST: Movies/Create

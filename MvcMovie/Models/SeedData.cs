@@ -31,7 +31,7 @@ namespace MvcMovie.Models
                         Description = "It is about a romantic couple"
                         
                     },
-
+                  
                     new Movie
                     {
                         Title = "Ghostbusters ",
